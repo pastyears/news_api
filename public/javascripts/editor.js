@@ -394,7 +394,6 @@ function publishArticle(data, callback){
     params += `${key}=${data[key]}&`;
   }
   params += `cate=${window.category}&`;
-  params += `fileName=${fileNname()}&`;
   Ajax.post("/api/publish", params, (result) => {
     callback && callback(result)
   })
