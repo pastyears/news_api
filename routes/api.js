@@ -12,4 +12,8 @@ router.post('/login', model.login);
 // 获取列表
 router.get('/list', model.list);
 
+router.post('/publish', model.publish);
+
+router.post('/detail', model.detail);
+
 module.exports = router;
