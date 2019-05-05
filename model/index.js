@@ -47,13 +47,24 @@ exports.list = (req, res, next) => {
 exports.publish = (req, res, next) => {
   const connect = mysql.createConnection(db);
   const detail = req.body.content
-  const nowName = `${fileName()}.txt`
+  const cover = req.body.cover
+  const nowName = `${fileName()}`
+  let base64Data = cover.replace(/^data:image\/\w+;base64,/, "");
+  base64Data = base64Data.replace(/ /g, "+");
+  const dataBuffer = new Buffer(base64Data, 'base64');
+  const imageSrc = path.resolve(__dirname, '../public/images') + '/' + nowName + '.png'
+
+  fs.writeFile(imageSrc, dataBuffer, function(err){
+    if (!err) {
+      console.log("上传封面成功！")
+    }
+  });
   const params = {
     News_title: req.body.title,
     News_content: nowName,
     News_author: req.body.author,
     News_style: req.body.cate,
-    News_images: req.body.cover
+    News_images: `/images/${nowName}.png`
   }
   connect.query("insert into news set ?",
   params, function(err, data){
@@ -82,7 +93,7 @@ exports.publish = (req, res, next) => {
 }
 
 function writeArticle(fileName, detail, callback){
-  fs.writeFile(path.resolve(__dirname, '../views/article/') + '/' + fileName, detail, function(err) {
+  fs.writeFile(path.resolve(__dirname, '../views/article/') + '/' + fileName + '.txt', detail, function(err) {
     if(err) {
       callback(false)
     }
@@ -107,7 +118,7 @@ function fileName(){
 
 exports.detail = (req, res, next) => {
   const fileName = req.body.name
-  fs.readFile(path.resolve(__dirname, '../views/article/') + '/' + fileName, {flag: 'r+', encoding: 'utf8'}, function (err, data) {
+  fs.readFile(path.resolve(__dirname, '../views/article/') + '/' + fileName + '.txt', {encoding: 'utf8'}, function (err, data) {
     if(err) {
       res.send("获取详情失败！")
     } else {
