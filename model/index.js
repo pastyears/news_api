@@ -27,8 +27,11 @@ exports.login = (req, res, next) => {
 
 exports.list = (req, res, next) => {
   const connect = mysql.createConnection(db);
-  const params = [req.query.cate];
-  connect.query("select * from news where News_style=?",
+  const page = req.query.page;
+  const size = req.query.size
+  const params = [req.query.cate, (page-1)*size, page*size]
+  console.log(page, size, params)
+  connect.query("select * from news where News_style=? limit ?, ?",
     params, function(err, data){
     if (data) {
       result.code = "0";
