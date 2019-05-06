@@ -390,6 +390,7 @@ function _inputHookHandler (e) {
 
 function publishArticle(data, callback){
   let params = "";
+  data.content = data.content.replace(/\+/g, '1314');
   for (let key in data) {
     params += `${key}=${data[key]}&`;
   }
@@ -413,18 +414,3 @@ var Ajax={
     xmlhttp.send(params);
   }
 }
-
-function fileNname(){
-  var time = new Date();
-  var year = time.getFullYear();
-  var month = time.getMonth()+1;
-  var day = time.getDate();
-  var hours = time.getHours();
-  var minute = time.getMinutes();
-  var second = time.getSeconds();
-  var str = String(year) + month + day + hours + minute + second;
-  for(var i = 0;i < 4; i++){
-      str += String(Math.round(Math.random()*9));
-  }
-  return str;
-};

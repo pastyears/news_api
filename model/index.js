@@ -49,7 +49,7 @@ exports.list = (req, res, next) => {
   
 exports.publish = (req, res, next) => {
   const connect = mysql.createConnection(db);
-  const detail = req.body.content
+  const detail = req.body.content.replace(/1314/g, '+')
   const cover = req.body.cover
   const nowName = `${fileName()}`
   let base64Data = cover.replace(/^data:image\/\w+;base64,/, "");
@@ -128,4 +128,23 @@ exports.detail = (req, res, next) => {
       res.send(data)
     }
   });
+}
+
+exports.search = (req, res, next) => {
+  const connect = mysql.createConnection(db);
+  const params = [req.query.content];
+  connect.query(`select * from news where News_title like'%${req.query.content}%'`,
+    [], function(err, data){
+    if (data) {
+      result.code = "0";
+      result.msg = "搜索成功！";
+      result.data = data;
+    } else {
+      result.code = "1";
+      result.msg = "搜索失败！";
+      result.data = null;
+    }
+    res.send(result);
+  }) 
+  connect.end();
 }

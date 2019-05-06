@@ -16,4 +16,6 @@ router.post('/publish', model.publish);
 
 router.post('/detail', model.detail);
 
+router.get('/search', model.search);
+
 module.exports = router;
