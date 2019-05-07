@@ -18,4 +18,13 @@ router.post('/detail', model.detail);
 
 router.get('/search', model.search);
 
+router.get('/register',model.register)
+// 收藏列表获取
+router.get('/collect',model.collect);
+// 收藏
+router.get('/addcollect',model.addcollect);
+// 判断是否收藏
+router.get('/iscollect',model.iscollect);
+// 取消收藏
+router.get('/deletecollect',model.deletecollect);
 module.exports = router;
